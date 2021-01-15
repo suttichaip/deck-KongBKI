@@ -1,24 +1,12 @@
 #!/bin/sh -l
-set -e -o pipefail
 
-main (){
-    cmd=$1
-    dir=$2
-    ops=$3
-    if [ ! -e ${dir} ]; then
-        echo "${dir}: No such file or directory exists";
-        exit 1;
-    fi
+deck ping --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong
 
-    for file in $(ls ${dir}); do
-        echo "Executing: deck $cmd $ops -s $dir/$file"
-        deck $cmd $ops -s $dir/$file
-    done
-}
+deck validate --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/default.yaml
+deck sync --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/default.yaml
 
+deck validate --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/External.yaml
+deck sync --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/External.yaml
 
-case $1 in
-    "ping") deck $1 $3;;
-    "validate"|"diff"|"sync") main $1 $2 "$3" ;;
-    * ) echo "deck $1 is not supported." && exit 1 ;;
-esac
+deck validate --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/Internal.yaml
+deck sync --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/Internal.yaml

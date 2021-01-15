@@ -2,10 +2,10 @@ _format_version: "1.1"
 _workspace: External
 services:
 - connect_timeout: 60000
-  host: httpbin.org
+  host: 10.4.178.136
   name: Service2
-  path: /anything
-  port: 80
+  path: /ords/hr/rest-v1/employees
+  port: 8080
   protocol: http
   read_timeout: 60000
   retries: 5
@@ -87,12 +87,50 @@ services:
       - grpcs
       - http
       - https
+    - name: rate-limiting-advanced
+      config:
+        dictionary_name: kong_rate_limiting_counters
+        header_name: null
+        hide_client_headers: false
+        identifier: consumer
+        limit:
+        - 3
+        - 30
+        namespace: Cy83S3IriBMXxSNhCSbRDsisjzTkiqXb
+        redis:
+          cluster_addresses: null
+          database: 0
+          host: null
+          password: null
+          port: null
+          sentinel_addresses: null
+          sentinel_master: null
+          sentinel_password: null
+          sentinel_role: null
+          server_name: null
+          ssl: false
+          ssl_verify: false
+          timeout: 2000
+        strategy: cluster
+        sync_rate: 5
+        window_size:
+        - 60
+        - 3600
+        window_type: sliding
+      enabled: false
+      protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
     - name: response-transformer-advanced
       config:
         add:
           headers: []
-          if_status: []
-          json: []
+          if_status:
+          - "401"
+          json:
+          - 'message: Contact Administrator for OAuth2.0'
           json_types: []
         allow:
           json: null
@@ -111,10 +149,8 @@ services:
         replace:
           body: null
           headers: []
-          if_status:
-          - "200"
-          json:
-          - data:Success
+          if_status: []
+          json: []
           json_types: []
         transform:
           functions: []
@@ -127,7 +163,11 @@ services:
       - https
 consumers:
 - username: External Consumer
+  keyauth_credentials:
+  - key: external_key
   oauth2_credentials:
   - name: ExternalConsumer
     client_id: LZwAGtteDFeOYalHyz8nolnGF9j5n3VV
-    client_secret: $pbkdf2-sha512$i=10000,l=32$7H+1+1+cbKjMwWjtW6kfFg$PJnAwMOR/+lzjrXcUsx70WrD/jthCWI9qzfvswuhN64
+    client_secret: $pbkdf2-sha512$i=10000,l=32$c/Lg/+VfSGC9cgdM0QCBcQ$3HurGGQR+qHGzeV1AV6Hl+Vv1e4uN0Pq6+Wik8eB3RQ
+    redirect_uris:
+    - http://10.4.178.133:8000/route4
