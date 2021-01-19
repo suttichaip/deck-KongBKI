@@ -10,3 +10,6 @@ deck sync --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kon
 
 deck validate --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/Internal.yaml
 deck sync --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/Internal.yaml
+
+deck validate --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/test.yaml
+deck sync --kong-addr http://kong-ee:8001 --headers Kong-Admin-Token:kong -s kong/test.yaml
