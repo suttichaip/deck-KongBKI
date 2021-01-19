@@ -64,43 +64,10 @@ services:
       - grpcs
       - http
       - https
-    - name: request-transformer-advanced
-      config:
-        add:
-          body: []
-          headers: []
-          querystring: []
-        allow:
-          body: null
-        append:
-          body: []
-          headers: []
-          querystring: []
-        http_method: null
-        remove:
-          body: []
-          headers: []
-          querystring: []
-        rename:
-          body: []
-          headers: []
-          querystring: []
-        replace:
-          body: []
-          headers:
-          - Content-Type:text/xml
-          querystring: []
-          uri: null
-      enabled: false
-      protocols:
-      - grpc
-      - grpcs
-      - http
-      - https
     - name: xml-json-transformer
       config:
         ignore_content_type: false
-      enabled: true
+      enabled: false
       protocols:
       - grpc
       - grpcs
@@ -228,7 +195,7 @@ consumers:
   keyauth_credentials:
   - key: guass.key
   basicauth_credentials:
-  - username: guass
-    password: be65272b835ff9ee28405ea963ca5c041e2d3954
+  - username: gauss
+    password: 459d10124ec9614af99975239222a0ad91fe8842
   acls:
   - group: BGroup
